@@ -46,6 +46,7 @@ com\strideai\model\Exercise$ExerciseBuilder.class
 com\strideai\model\DietPlan.class
 com\strideai\model\Exercise.class
 com\strideai\controller\PlanController.class
+com\strideai\model\User$Sex.class
 com\strideai\dto\WorkoutDTO$ExerciseResponse.class
 com\strideai\security\JwtUtils.class
 com\strideai\dto\UserDTO$UserDTOBuilder.class

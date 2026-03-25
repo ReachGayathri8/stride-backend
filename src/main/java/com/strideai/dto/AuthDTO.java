@@ -7,16 +7,18 @@ public class AuthDTO {
 
     @Getter @Setter
     public static class RegisterRequest {
-        @NotBlank private String name;
+        @NotBlank  private String  name;
         @Email @NotBlank private String email;
         @Size(min = 8) private String password;
         private Integer age;
-        private Double weightKg;
-        private Double heightCm;
-        private String fitnessGoal = "GENERAL";
-        private String budgetTier  = "MEDIUM";
-        private String dietPref    = "NONE";
-        private boolean male = true;
+        private Double  weightKg;
+        private Double  heightCm;
+        private String  fitnessGoal  = "GENERAL";
+        private String  budgetTier   = "MEDIUM";
+        private String  dietPref     = "NONE";
+        private boolean male         = true;
+        // New sex field: MALE / FEMALE / OTHER
+        private String  sex          = "MALE";
     }
 
     @Getter @Setter
@@ -27,7 +29,7 @@ public class AuthDTO {
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
     public static class AuthResponse {
-        private String token;
+        private String  token;
         private UserDTO user;
     }
 }

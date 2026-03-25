@@ -3,23 +3,21 @@ package com.strideai.dto;
 import lombok.*;
 import com.strideai.model.User;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class UserDTO {
 
-    private Long id;
-    private String name;
-    private String email;
+    private Long    id;
+    private String  name;
+    private String  email;
     private Integer age;
-    private Double weightKg;
-    private Double heightCm;
-    private String fitnessGoal;
-    private String budgetTier;
-    private String dietPref;
+    private Double  weightKg;
+    private Double  heightCm;
+    private String  fitnessGoal;
+    private String  budgetTier;
+    private String  dietPref;
     private boolean male;
+    private String  sex;
+    private boolean beginnerMode;
 
     public static UserDTO from(User u) {
         return UserDTO.builder()
@@ -33,6 +31,8 @@ public class UserDTO {
                 .budgetTier(u.getBudgetTier()  != null ? u.getBudgetTier().name()  : "MEDIUM")
                 .dietPref(u.getDietPref()      != null ? u.getDietPref().name()    : "NONE")
                 .male(u.isMale())
+                .sex(u.getSex() != null ? u.getSex().name() : "MALE")
+                .beginnerMode(u.isBeginnerMode())
                 .build();
     }
 }

@@ -1,7 +1,5 @@
 package com.strideai.controller;
 
-
-import java.time.LocalDateTime;
 import com.strideai.model.User;
 import com.strideai.model.WorkoutSession;
 import com.strideai.repository.UserRepository;
@@ -12,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 public class AnalyticsController {
 
     @Autowired private WorkoutSessionRepository sessionRepo;
-    @Autowired private UserRepository userRepo;
+    @Autowired private UserRepository           userRepo;
 
     private User getUser(UserDetails ud) {
         return userRepo.findByEmail(ud.getUsername()).orElseThrow();
@@ -30,9 +29,9 @@ public class AnalyticsController {
     @GetMapping("/dashboard")
     public ResponseEntity<Map<String, Object>> getDashboard(@AuthenticationPrincipal UserDetails ud) {
         User user = getUser(ud);
-        long totalSessions = sessionRepo.countByUser(user);
-        long totalReps     = sessionRepo.sumTotalRepsByUser(user);
-        Double avgAcc      = sessionRepo.avgAccuracyByUser(user);
+        long   totalSessions = sessionRepo.countByUser(user);
+        long   totalReps     = sessionRepo.sumTotalRepsByUser(user);
+        Double avgAcc        = sessionRepo.avgAccuracyByUser(user);
 
         List<WorkoutSession> recent = sessionRepo.findTop7ByUserOrderByStartedAtDesc(user);
         Collections.reverse(recent);
@@ -45,13 +44,11 @@ public class AnalyticsController {
             return p;
         }).collect(Collectors.toList());
 
-        int streak = calculateStreak(recent);
-
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("totalSessions", totalSessions);
         result.put("totalReps",     totalReps);
         result.put("avgAccuracy",   avgAcc != null ? Math.round(avgAcc) : 0);
-        result.put("streak",        streak);
+        result.put("streak",        calculateStreak(recent));
         result.put("accuracyTrend", accuracyTrend);
         result.put("volumeTrend",   buildVolumeTrend(recent));
         return ResponseEntity.ok(result);
@@ -74,8 +71,8 @@ public class AnalyticsController {
 
     @GetMapping("/performance")
     public ResponseEntity<Map<String, Object>> getPerformance(@AuthenticationPrincipal UserDetails ud) {
-        User user = getUser(ud);
-        Double avg = sessionRepo.avgAccuracyByUser(user);
+        User   user = getUser(ud);
+        Double avg  = sessionRepo.avgAccuracyByUser(user);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("avgAccuracy", avg != null ? Math.round(avg) : 0);
         return ResponseEntity.ok(result);

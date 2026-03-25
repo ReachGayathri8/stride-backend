@@ -20,9 +20,9 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired private AuthenticationManager authManager;
-    @Autowired private UserRepository userRepo;
-    @Autowired private PasswordEncoder encoder;
-    @Autowired private JwtUtils jwtUtils;
+    @Autowired private UserRepository        userRepo;
+    @Autowired private PasswordEncoder       encoder;
+    @Autowired private JwtUtils              jwtUtils;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody AuthDTO.RegisterRequest req) {
@@ -33,6 +33,11 @@ public class AuthController {
         User.FitnessGoal fitnessGoal = parseEnum(User.FitnessGoal.class, req.getFitnessGoal(), User.FitnessGoal.GENERAL);
         User.BudgetTier  budgetTier  = parseEnum(User.BudgetTier.class,  req.getBudgetTier(),  User.BudgetTier.MEDIUM);
         User.DietPref    dietPref    = parseEnum(User.DietPref.class,    req.getDietPref(),    User.DietPref.NONE);
+        User.Sex         sex         = parseEnum(User.Sex.class,         req.getSex(),         User.Sex.MALE);
+
+        // Auto-detect beginner mode: age < 20 OR goal is GENERAL
+        int  age         = (req.getAge() != null) ? req.getAge() : 25;
+        boolean beginner = (age < 20) || (fitnessGoal == User.FitnessGoal.GENERAL);
 
         User user = User.builder()
                 .name(req.getName())
@@ -44,7 +49,9 @@ public class AuthController {
                 .fitnessGoal(fitnessGoal)
                 .budgetTier(budgetTier)
                 .dietPref(dietPref)
-                .male(req.isMale())
+                .male(sex == User.Sex.MALE)
+                .sex(sex)
+                .beginnerMode(beginner)
                 .build();
 
         userRepo.save(user);
