@@ -36,11 +36,6 @@ public class WorkoutDTO {
         private Object keypointRules;
         private Object angleThresholds;
         private Object feedbackCues;
-
-        public ExerciseRulesResponse(String id, String name, Object kp, Object ang, Object cues) {
-            this.id = id; this.name = name;
-            this.keypointRules = kp; this.angleThresholds = ang; this.feedbackCues = cues;
-        }
     }
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
