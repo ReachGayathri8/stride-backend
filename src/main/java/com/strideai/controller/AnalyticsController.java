@@ -1,5 +1,7 @@
 package com.strideai.controller;
 
+import java.time.LocalDateTime;
+
 import com.strideai.model.User;
 import com.strideai.model.WorkoutSession;
 import com.strideai.repository.UserRepository;
