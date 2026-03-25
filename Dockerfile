@@ -4,4 +4,4 @@ WORKDIR /app
 COPY . .
 RUN mvn clean install -DskipTests
 
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["sh", "-c", "java -jar target/*.jar"]
